@@ -26,13 +26,7 @@ export const dashboardAPIGroup = 'dashboard.tekton.dev';
 
 // URL의 ?q= 값 읽기
 function readQFromUrl() {
-  try {
-    if (typeof window === 'undefined') return '';
-    const url = new URL(window.location.href);
-    return url.searchParams.get('q') || '';
-  } catch {
-    return '';
-  }
+   return '';
 }
 
 // LabelFilter가 쏘는 전역 이벤트 구독
@@ -41,70 +35,6 @@ function onTextSearch(callback) {
   const handler = e => callback((e?.detail?.q || '').trim());
   window.addEventListener('tkn:textSearch', handler);
   return () => window.removeEventListener('tkn:textSearch', handler);
-}
-
-// 이름 토큰 인덱스(하이픈/점/슬래시 기준 분할 + 구분자 제거본)
-function buildNameIndex(name = '') {
-  const s = String(name).toLowerCase();
-  const parts = s.split(/[-._/]+/g).filter(Boolean);   // ex) ['sample','dev','deploy','pr']
-  const joined = s.replace(/[-._/]+/g, '');            // ex) 'sampledevdeploypr'
-  return { raw: s, parts, joined };
-}
-
-// 검색 문자열 수집(메타/라벨/어노테이션/spec/status 등)
-// ⚠ apiVersion 은 제외(‘dev’가 tekton.dev 에 과매칭되는 노이즈 방지)
-function collectSearchStrings(resource) {
-  if (!resource || typeof resource !== 'object') return [];
-  const md = resource.metadata || {};
-  const spec = resource.spec || {};
-  const status = resource.status || {};
-
-  const out = [];
-
-  // 기본 메타 (apiVersion 제외)
-  out.push(
-    resource.kind,
-    md.name,
-    md.generateName,
-    md.namespace,
-    md.uid
-  );
-
-  // labels / annotations (key & value)
-  const labels = md.labels || {};
-  Object.entries(labels).forEach(([k, v]) => {
-    out.push(k, String(v ?? ''));
-  });
-  const ann = md.annotations || {};
-  Object.entries(ann).forEach(([k, v]) => {
-    out.push(k, String(v ?? ''));
-  });
-
-  // ownerReferences
-  (md.ownerReferences || []).forEach(o => {
-    out.push(o?.kind, o?.name);
-  });
-
-  // Tekton에서 자주 보는 spec 필드들
-  if (spec.serviceAccountName) out.push(spec.serviceAccountName);
-  if (spec.taskRunTemplate?.serviceAccountName)
-    out.push(spec.taskRunTemplate.serviceAccountName);
-  if (spec.pipelineRef?.name) out.push(spec.pipelineRef.name);
-  if (spec.taskRef?.name) out.push(spec.taskRef.name);
-
-  // params (name/value)
-  (spec.params || []).forEach(p => {
-    out.push(p?.name);
-    out.push(typeof p?.value === 'object' ? JSON.stringify(p.value) : String(p?.value ?? ''));
-  });
-
-  // workspaces 이름
-  (spec.workspaces || []).forEach(w => out.push(w?.name));
-
-  // status.conditions reason/message
-  (status.conditions || []).forEach(c => out.push(c?.reason, c?.message));
-
-  return out.filter(s => typeof s === 'string' && s.trim().length > 0);
 }
 
 // 최종 필터:
@@ -145,9 +75,7 @@ export function applyClientTextFilter(items, q) {
     });
   });
 }
-
 /* ===== 유틸 끝 ===== */
-
 
 export function getQueryParams({
   filters,

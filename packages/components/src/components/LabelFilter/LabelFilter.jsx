@@ -36,15 +36,6 @@ function broadcastTextQuery(q) {
     }
   } catch {}
 }
-function setUrlTextQuery(q) {
-  try {
-    if (typeof window === 'undefined') return;
-    const url = new URL(window.location.href);
-    if (q && q.trim()) url.searchParams.set('q', q.trim());
-    else url.searchParams.delete('q');
-    window.history.replaceState({}, '', url);
-  } catch {}
-}
 /* ▲ 추가 끝 */
 
 class LabelFilter extends Component {
@@ -88,17 +79,16 @@ class LabelFilter extends Component {
   // 일반 텍스트 검색 적용/해제
   applyTextSearch = (query) => {
     const trimmed = (query || '').trim();
+    if (this.state.textQuery === trimmed) return;
     this.setState({ textQuery: trimmed });
     this.props.onTextSearch?.(trimmed);
     broadcastTextQuery(trimmed);
-    setUrlTextQuery(trimmed);
   };
 
   clearTextSearch = () => {
     this.setState({ textQuery: '' });
     this.props.onTextSearch?.('');
     broadcastTextQuery('');
-    setUrlTextQuery('');
   };
 
   handleAddFilter = (event) => {
@@ -170,6 +160,7 @@ class LabelFilter extends Component {
     this.setState({ currentFilterValue: inputValue });
 
     const val = (inputValue || '').trim();
+    if (val === '') { this.clearTextSearch(); return; }
     const compact = val.replace(/\s/g, '');
     if (!LABEL_REGEX.test(compact)) {
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
@@ -275,7 +266,7 @@ class LabelFilter extends Component {
               onClose={this.clearTextSearch}
               type="high-contrast"
             >
-              {`q:${textQuery}`}
+              {textQuery}
             </Tag>
           ) : null}
 
