@@ -1,0 +1,66 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directories:
+    - "**/*"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    groups:
+      all:
+        patterns:
+          - "*"
+    labels:
+    - "area/dependency"
+    - "dependencies"
+    - "kind/misc"
+    - "ok-to-test"
+    - "docker"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    labels:
+    - "area/automation"
+    - "dependencies"
+    - "kind/misc"
+    - "ok-to-test"
+    - "github-actions"
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    groups:
+      k8s:
+        patterns:
+          - "k8s.io/*"
+    labels:
+    - "area/dependency"
+    - "dependencies"
+    - "kind/misc"
+    - "ok-to-test"
+    - "go"
+  - package-ecosystem: "npm"
+    directories:
+      - "**/*"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    groups:
+      storybook:
+        patterns:
+          - "eslint-plugin-storybook"
+          - "storybook"
+          - "@storybook/*"
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+    labels:
+    - "area/dependency"
+    - "dependencies"
+    - "kind/misc"
+    - "ok-to-test"
+    - "javascript"
