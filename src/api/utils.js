@@ -75,6 +75,20 @@ export function applyClientTextFilter(items, q) {
     });
   });
 }
+function shouldApplyTextFilter({ group, kind }) {
+  const g = String(group || '').toLowerCase();
+  const k = String(kind || '').toLowerCase();
+
+  // 확장메뉴 데이터는 건드리지 말자
+  if (g === dashboardAPIGroup.toLowerCase()) return false;      // e.g. dashboard.tekton.dev
+  // 필요하면 더 엄격히: if (g === dashboardAPIGroup.toLowerCase() && k === 'extensions') return false;
+
+  // Pipelines / Triggers 계열만 필터 대상
+  return (
+    g === tektonAPIGroup.toLowerCase() ||     // tekton.dev
+    g === triggersAPIGroup.toLowerCase()      // triggers.tekton.dev
+  );
+}
 /* ===== 유틸 끝 ===== */
 
 export function getQueryParams({
@@ -338,7 +352,8 @@ export function useCollection({ group, kind, params, queryConfig, version }) {
   }
 
   // ▼ 필터 적용
-  const filteredData = applyClientTextFilter(items, textQuery);
+  const applyFilter = !!textQuery && shouldApplyTextFilter({ group, kind });
+  const filteredData = applyFilter ? applyClientTextFilter(items, textQuery) : items;
 
   // ▼ WebSocket 유지 (그대로)
   const { isWebSocketConnected } = useWebSocket({
