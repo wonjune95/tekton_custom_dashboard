@@ -79,6 +79,7 @@ export default /* istanbul ignore next */ function PipelineRun({
 }) {
   const intl = useIntl();
   const [isLogsMaximized, setIsLogsMaximized] = useState(false);
+  const [isTaskRunMaximized, setIsTaskRunMaximized] = useState(false);
   const [expandedSteps, setExpandedSteps] = useState(() =>
     selectedStepId ? { [selectedStepId]: true } : {}
   );
@@ -106,6 +107,10 @@ export default /* istanbul ignore next */ function PipelineRun({
 
   function onToggleLogsMaximized() {
     setIsLogsMaximized(prevIsLogsMaximized => !prevIsLogsMaximized);
+  }
+
+  function onToggleTaskRunMaximized() {
+    setIsTaskRunMaximized(prevIsTaskRunMaximized => !prevIsTaskRunMaximized);
   }
 
   function getLogContainer({
@@ -424,8 +429,10 @@ export default /* istanbul ignore next */ function PipelineRun({
                 expandedSteps={expandedSteps}
                 getLogContainer={getLogContainer}
                 getLogsToolbar={getLogsToolbar}
+                isMaximized={isTaskRunMaximized}
                 onRetryChange={onRetryChange}
                 onStepSelected={onStepSelected}
+                onToggleMaximized={onToggleTaskRunMaximized}
                 onViewChange={onViewChange}
                 pod={pod}
                 preTaskRun={preTaskRun}

@@ -60,28 +60,15 @@ function SideNav({ expanded, showKubernetesResources = false }) {
   function getMenuItemProps(to) {
     return {
       as: NavLink,
-      isActive: !!matchPath(
-        {
-          path: to
-        },
-        location.pathname
-      ),
+      isActive: !!matchPath({ path: to }, location.pathname),
       to
     };
   }
 
   function getPath(path, namespaced = true) {
-    if (
-      namespaced &&
-      selectedNamespace &&
-      selectedNamespace !== ALL_NAMESPACES
-    ) {
-      return urls.byNamespace({
-        namespace: selectedNamespace,
-        path
-      });
+    if (namespaced && selectedNamespace && selectedNamespace !== ALL_NAMESPACES) {
+      return urls.byNamespace({ namespace: selectedNamespace, path });
     }
-
     return path;
   }
 
@@ -94,138 +81,113 @@ function SideNav({ expanded, showKubernetesResources = false }) {
       as={CarbonSideNav}
       expanded={expanded}
       isFixedNav
-      theme="g100"
+      className="nd-sidenav"
+      theme="g10"
     >
       <SideNavItems>
+        {/* NND 리소스 */}
         <SideNavMenu
           defaultExpanded
           renderIcon={TektonIcon}
           title={intl.formatMessage({
             id: 'dashboard.sideNav.tektonResources',
-            defaultMessage: 'Tekton resources'
+            defaultMessage: 'NND 리소스'
           })}
         >
           <SideNavMenuItem {...getMenuItemProps(getPath(urls.pipelines.all()))}>
-            Pipelines
+            파이프라인
           </SideNavMenuItem>
-          <SideNavMenuItem
-            {...getMenuItemProps(getPath(urls.pipelineRuns.all()))}
-          >
-            PipelineRuns
+          <SideNavMenuItem {...getMenuItemProps(getPath(urls.pipelineRuns.all()))}>
+            파이프라인 실행
           </SideNavMenuItem>
-          <SideNavMenuItem
-            {...getMenuItemProps(getPath(urls.stepActions.all()))}
-          >
-            StepActions
+          <SideNavMenuItem {...getMenuItemProps(getPath(urls.stepActions.all()))}>
+            스텝 액션
           </SideNavMenuItem>
           <SideNavMenuItem {...getMenuItemProps(getPath(urls.tasks.all()))}>
-            Tasks
+            태스크
           </SideNavMenuItem>
           <SideNavMenuItem {...getMenuItemProps(getPath(urls.taskRuns.all()))}>
-            TaskRuns
+            태스크 실행
           </SideNavMenuItem>
-          <SideNavMenuItem
-            {...getMenuItemProps(getPath(urls.customRuns.all()))}
-          >
-            CustomRuns
+          <SideNavMenuItem {...getMenuItemProps(getPath(urls.customRuns.all()))}>
+            커스텀 실행
           </SideNavMenuItem>
+
+          {/* Triggers 계열: 설치된 경우에만 표시 */}
           {isTriggersInstalled && (
-            <SideNavMenuItem
-              {...getMenuItemProps(getPath(urls.eventListeners.all()))}
-            >
-              EventListeners
-            </SideNavMenuItem>
-          )}
-          {isTriggersInstalled && (
-            <SideNavMenuItem
-              {...getMenuItemProps(getPath(urls.triggers.all()))}
-            >
-              Triggers
-            </SideNavMenuItem>
-          )}
-          {isTriggersInstalled && (
-            <SideNavMenuItem
-              {...getMenuItemProps(getPath(urls.triggerBindings.all()))}
-            >
-              TriggerBindings
-            </SideNavMenuItem>
-          )}
-          {isTriggersInstalled && (
-            <SideNavMenuItem
-              {...getMenuItemProps(urls.clusterTriggerBindings.all())}
-            >
-              ClusterTriggerBindings
-            </SideNavMenuItem>
-          )}
-          {isTriggersInstalled && (
-            <SideNavMenuItem
-              {...getMenuItemProps(getPath(urls.triggerTemplates.all()))}
-            >
-              TriggerTemplates
-            </SideNavMenuItem>
-          )}
-          {isTriggersInstalled && (
-            <SideNavMenuItem
-              {...getMenuItemProps(getPath(urls.interceptors.all()))}
-            >
-              Interceptors
-            </SideNavMenuItem>
-          )}
-          {isTriggersInstalled && (
-            <SideNavMenuItem
-              {...getMenuItemProps(urls.clusterInterceptors.all())}
-            >
-              ClusterInterceptors
-            </SideNavMenuItem>
+            <>
+              <SideNavMenuItem {...getMenuItemProps(getPath(urls.eventListeners.all()))}>
+                이벤트 리스너
+              </SideNavMenuItem>
+              <SideNavMenuItem {...getMenuItemProps(getPath(urls.triggers.all()))}>
+                트리거
+              </SideNavMenuItem>
+              <SideNavMenuItem {...getMenuItemProps(getPath(urls.triggerBindings.all()))}>
+                트리거 바인딩
+              </SideNavMenuItem>
+              <SideNavMenuItem {...getMenuItemProps(urls.clusterTriggerBindings.all())}>
+                클러스터 트리거 바인딩
+              </SideNavMenuItem>
+              <SideNavMenuItem {...getMenuItemProps(getPath(urls.triggerTemplates.all()))}>
+                트리거 템플릿
+              </SideNavMenuItem>
+              <SideNavMenuItem {...getMenuItemProps(getPath(urls.interceptors.all()))}>
+                인터셉터
+              </SideNavMenuItem>
+              <SideNavMenuItem {...getMenuItemProps(urls.clusterInterceptors.all())}>
+                클러스터 인터셉터
+              </SideNavMenuItem>
+            </>
           )}
         </SideNavMenu>
 
+        {/* Kubernetes 리소스 (옵션) */}
         {showKubernetesResources && (
           <SideNavMenu
             defaultExpanded
             renderIcon={KubernetesIcon}
             title={intl.formatMessage({
               id: 'dashboard.sideNav.kubernetesResources',
-              defaultMessage: 'Kubernetes resources'
+              defaultMessage: 'Kubernetes 리소스'
             })}
           >
             placeholder
           </SideNavMenu>
         )}
 
+        {/* 확장 기능 */}
         {extensions.length > 0 && (
           <SideNavMenu
             defaultExpanded
             renderIcon={props => <ExtensionsIcon size={20} {...props} />}
             title={intl.formatMessage({
               id: 'dashboard.extensions.title',
-              defaultMessage: 'Extensions'
+              defaultMessage: '확장 기능'
             })}
           >
-            {extensions.map(
-              ({ apiGroup, apiVersion, displayName, name, namespaced }) => {
-                const to = getPath(
-                  urls.kubernetesResources.all({
-                    group: apiGroup,
-                    kind: name,
-                    version: apiVersion
-                  }),
-                  namespaced
-                );
-                return (
-                  <SideNavMenuItem
-                    {...getMenuItemProps(to)}
-                    key={name}
-                    title={displayName}
-                  >
-                    {displayName}
-                  </SideNavMenuItem>
-                );
-              }
-            )}
+            {extensions.map(({ apiGroup, apiVersion, displayName, name, namespaced }) => {
+              const to = getPath(
+                urls.kubernetesResources.all({
+                  group: apiGroup,
+                  kind: name,
+                  version: apiVersion
+                }),
+                namespaced
+              );
+              return (
+                <SideNavMenuItem
+                  {...getMenuItemProps(to)}
+                  key={name}
+                  title={displayName}
+                >
+                  {displayName}
+                </SideNavMenuItem>
+              );
+            })}
           </SideNavMenu>
         )}
 
+        {/* 리소스 가져오기 */}
         {!isReadOnly && (
           <SideNavLink
             as={NavLink}
@@ -234,11 +196,12 @@ function SideNav({ expanded, showKubernetesResources = false }) {
           >
             {intl.formatMessage({
               id: 'dashboard.importResources.title',
-              defaultMessage: 'Import resources'
+              defaultMessage: '리소스 가져오기'
             })}
           </SideNavLink>
         )}
 
+        {/* 소개 / 설정 */}
         <SideNavLink
           as={NavLink}
           renderIcon={props => <AboutIcon size={20} {...props} />}
@@ -246,7 +209,7 @@ function SideNav({ expanded, showKubernetesResources = false }) {
         >
           {intl.formatMessage({
             id: 'dashboard.about.title',
-            defaultMessage: 'About Tekton'
+            defaultMessage: 'Native Deck 소개'
           })}
         </SideNavLink>
 
@@ -257,7 +220,7 @@ function SideNav({ expanded, showKubernetesResources = false }) {
         >
           {intl.formatMessage({
             id: 'dashboard.settings.title',
-            defaultMessage: 'Settings'
+            defaultMessage: '설정'
           })}
         </SideNavLink>
       </SideNavItems>

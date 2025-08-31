@@ -53,6 +53,11 @@ limitations under the License.
 @use '@tektoncd/dashboard-components/src/components/Trigger/Trigger';
 @use '@tektoncd/dashboard-components/src/components/ViewYAML/ViewYAML';
 
+:root {
+  // used to control position of sticky headers on run details page
+  --tkn-global-header-offset: 3rem;
+}
+
 html,
 #root,
 .tkn--main-content {
@@ -61,12 +66,16 @@ html,
 
 body {
   // to prevent unwanted scroll when content doesn't fill full height
-  block-size: calc(100% - 3rem);
+  block-size: calc(100% - var(--tkn-global-header-offset));
+}
+
+body:has(.tkn--taskrun--maximized) {
+  overflow: hidden;
 }
 
 #main-content {
   // height of the main header, added for accessibility of skip to main content link
-  scroll-margin-block-start: 3rem;
+  scroll-margin-block-start: var(--tkn-global-header-offset);
 }
 
 .#{$prefix}--btn.link-btn.#{$prefix}--btn--ghost {
@@ -120,15 +129,118 @@ body {
   block-size: 100vb;
   z-index: -1;
 
-  &:not(:empty) {
-    z-index: 9999;
-  }
-
   .tkn--log {
     min-block-size: 100%;
+  }
+
+  &:not(:empty) {
+    background-color: $layer;
+    z-index: 9999;
   }
 }
 
 .#{$prefix}--overflow-menu-options:after {
   display: none;
+}
+
+/* === About 상단(“Tekton 소개”) 영역: 배경 이미지를 꽉 채워서 사용 === */
+.tkn--about-header {
+  position: relative;
+  min-height: 220px;                             /* 필요하면 200~260px 조절 */
+  background: url('../images/tekton-dashboard-color.svg') right top / cover no-repeat;
+  border-bottom: 1px solid #e6eff7;
+
+  /* 컨텐츠 패딩 때문에 끊겨 보이지 않도록 살짝 풀-블리드 보정 */
+  margin-left: -16px;   /* 프로젝트 기본 패딩이 16px일 때 기준 */
+  margin-right: -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* 배경 위를 가리는 기존 로고 이미지 제거 (언어 상관없이 일괄) */
+.tkn--about-header img { 
+  display: none !important; 
+}
+
+/* 텍스트는 배경 위에 그대로 보이게 */
+.tkn--about-header header { 
+  position: relative; 
+  z-index: 1; 
+}
+
+:root{
+  /* === Palette (Cloud Blue) === */
+  --nd-primary: #1F8CE6;
+  --nd-text: #0F172A;
+  --nd-text-muted: #6B7280;
+  --nd-bg: #F7F8FA;
+  --nd-border: #E5E7EB;
+  --nd-hover-bg: #EAF4FF;
+  --nd-active-bg: #D9ECFF;
+  --nd-active-bar: var(--nd-primary);
+}
+
+/* 페이지 배경 톤 살짝 올리기 */
+body { background: var(--nd-bg); }
+
+/* ====== Left Sidenav (흰색 + 파랑 포인트) ====== */
+.nd-sidenav,
+.nd-sidenav .bx--side-nav__navigation,
+.nd-sidenav .bx--side-nav__items,
+.nd-sidenav .bx--side-nav__menu {
+  background: #fff !important;
+}
+
+.nd-sidenav {
+  border-right: 1px solid var(--nd-border);
+}
+
+.nd-sidenav .bx--side-nav__menu-title{
+  color: var(--nd-text-muted) !important;
+  font-weight: 600;
+}
+
+/* 링크 기본 */
+.nd-sidenav .bx--side-nav__link,
+.nd-sidenav .bx--side-nav__menu-item{
+  color: var(--nd-text) !important;
+  border-radius: 6px;
+  margin: 2px 8px;
+  height: 44px;
+  display: flex; align-items: center;
+}
+
+/* hover */
+.nd-sidenav .bx--side-nav__link:hover,
+.nd-sidenav .bx--side-nav__menu-item:hover{
+  background: var(--nd-hover-bg) !important;
+  color: var(--nd-primary) !important;
+}
+
+/* active */
+.nd-sidenav .bx--side-nav__item--active .bx--side-nav__link,
+.nd-sidenav .bx--side-nav__link[aria-current='page']{
+  background: var(--nd-active-bg) !important;
+  color: var(--nd-primary) !important;
+  box-shadow: inset 3px 0 0 0 var(--nd-active-bar);
+  font-weight: 600;
+}
+
+.nd-sidenav .bx--side-nav__icon svg{ fill: currentColor; }
+
+.tkn--header {
+  background: #fff !important;
+  color: var(--nd-text) !important;
+  box-shadow: 0 1px 0 var(--nd-border);
+}
+
+.tkn--header .bx--header__menu-item,
+.tkn--header .bx--header__name {
+  color: var(--nd-text) !important;
+}
+
+.tkn--header .bx--header__action:hover,
+.tkn--header .bx--header__menu-item:hover {
+  background: var(--nd-hover-bg) !important;
+  color: var(--nd-primary) !important;
 }

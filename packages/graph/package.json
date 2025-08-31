@@ -1,6 +1,6 @@
 {
   "name": "@tektoncd/dashboard-graph",
-  "version": "0.60.0-alpha.6",
+  "version": "0.61.0-alpha.4",
   "author": {
     "name": "The Tekton Authors"
   },
@@ -21,7 +21,7 @@
     "postpublish": "npm pkg set \"dependencies.@tektoncd/dashboard-utils=file:../utils\""
   },
   "dependencies": {
-    "@carbon/charts-react": "^1.23.15",
+    "@carbon/charts-react": "^1.23.17",
     "@tektoncd/dashboard-utils": "file:../utils",
     "@visx/event": "^3.12.0",
     "@visx/network": "^3.12.0",

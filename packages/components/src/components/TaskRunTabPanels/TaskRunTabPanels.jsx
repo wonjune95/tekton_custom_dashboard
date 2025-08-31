@@ -16,8 +16,8 @@ import { useIntl } from 'react-intl';
 import {
   Accordion,
   AccordionItem as CarbonAccordionItem,
-  TabPanel,
-  TabPanels
+  TabPanel as CarbonTabPanel,
+  TabPanels as CarbonTabPanels
 } from '@carbon/react';
 import { Pending as DefaultIcon } from '@carbon/react/icons';
 import {
@@ -32,8 +32,9 @@ import StatusIcon from '../StatusIcon';
 import FormattedDuration from '../FormattedDuration';
 import StepDefinition from '../StepDefinition';
 
-function getStepData({ reason, selectedStepId, steps }) {
-  const stepsToUse = updateUnexecutedSteps(steps);
+function getStepData({ isSidecar, reason, selectedStepId, steps }) {
+  // sidecars run in parallel to the regular steps, so keep their actual status
+  const stepsToUse = isSidecar ? steps : updateUnexecutedSteps(steps);
   const step = stepsToUse.find(
     stepToCheck => stepToCheck.name === selectedStepId
   );
@@ -106,6 +107,7 @@ function Step({
   }
 
   const stepData = getStepData({
+    isSidecar,
     reason: taskRunReason,
     selectedStepId: step.name,
     steps
@@ -193,7 +195,7 @@ function Step({
       title={
         <>
           <StatusIcon
-            DefaultIcon={props => <DefaultIcon size={20} {...props} />}
+            DefaultIcon={props => <DefaultIcon {...props} />}
             hasWarning={exitCode !== 0}
             reason={stepReason}
             status={stepStatus}
@@ -327,8 +329,10 @@ const TaskRunTabPanels = ({
   expandedSteps,
   getLogContainer,
   getLogsToolbar,
+  isMaximized,
   onRetryChange,
   onStepSelected,
+  onToggleMaximized,
   onViewChange,
   pod,
   preTaskRun,
@@ -337,6 +341,8 @@ const TaskRunTabPanels = ({
   selectedStepId,
   selectedTaskId,
   skippedTask,
+  TabPanel = CarbonTabPanel,
+  TabPanels = CarbonTabPanels,
   task,
   taskRun: taskRunToUse,
   taskRuns,
@@ -365,19 +371,20 @@ const TaskRunTabPanels = ({
       {taskRuns.map((taskRun, index) => (
         <TabPanel key={taskRun.metadata?.uid || index}>
           {selectedIndex === index + 1 ? (
-            // taskRunToUse may include additional matrix / retry data
             <TaskRunDetails
               fullTaskRun={taskRun}
-              getLogsToolbar={view === 'logs' && getLogsToolbar}
+              getLogsToolbar={getLogsToolbar}
+              isMaximized={isMaximized}
               logs={logs}
               onRetryChange={onRetryChange}
+              onToggleMaximized={onToggleMaximized}
               onViewChange={onViewChange}
               pod={pod}
               selectedRetry={selectedRetry}
               selectedStepId={selectedStepId}
               skippedTask={skippedTask}
               task={task}
-              taskRun={taskRunToUse}
+              taskRun={taskRunToUse} // may include additional matrix / retry data
               view={view}
             />
           ) : null}

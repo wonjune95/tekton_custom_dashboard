@@ -27,7 +27,7 @@ export function usePrevious(value) {
 export function useTitleSync({ page, resourceName }) {
   useEffect(() => {
     const pageTitle = page + (resourceName ? ` - ${resourceName}` : '');
-    document.title = `Tekton Dashboard | ${pageTitle}`;
+    document.title = `NHN Native Deck | ${pageTitle}`;
   }, [resourceName]);
 }
 

@@ -31,7 +31,7 @@ header.tkn--step-details-header {
 
     .tkn--taskrun-retries-dropdown {
       margin-inline-start: 0.5rem;
-      z-index: 5998;
+      z-index: 4998;
 
       .#{$prefix}--dropdown--sm {
         block-size: 1.75rem;
@@ -42,6 +42,12 @@ header.tkn--step-details-header {
     .#{$prefix}--btn-set {
       margin-inline: 0.5rem;
       align-self: center;
+      align-items: baseline;
+
+      .cds--btn--icon-only {
+        inline-size: 2rem;
+        block-size: 2rem;
+      }
     }
 
     .tkn--run-details-name {

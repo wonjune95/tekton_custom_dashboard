@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2024 The Tekton Authors
+Copyright 2019-2025 The Tekton Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -133,15 +133,19 @@ limitations under the License.
 
     .tkn--status-icon {
       flex-shrink: 0;
+      inline-size: 17px;
+      block-size: 17px;
     }
 
     .tkn--task-title--name {
+      color: $text-primary;
       flex-grow: 1;
     }
   };
 
   .tkn--task-duration {
-    margin-inline-start: 1.75rem; // 20px icon + 0.5rem gap
+    color: $text-helper;
+    margin-inline-start: 1.5625rem; // 17px icon + 0.5rem gap
   }
 }
 
@@ -157,11 +161,14 @@ limitations under the License.
   }
 }
 
-.tkn--tasks:has(> .#{$prefix}--tabs, .#{$prefix}--tabs.tkn--task-list) {
+// 'tab layout' styles for: PipelineRun vertical tabs, PipelineRun horizontal tabs, TaskRun
+.tkn--tasks:has(> .#{$prefix}--tabs, .#{$prefix}--tabs.tkn--task-list, > .tkn--step-details:first-child) {
   > .#{$prefix}--css-grid {
     max-inline-size: 100%;
 
     > .#{$prefix}--tab-content {
+      // we don't want 2 scrollbars, prefer the one on body
+      overflow-y: visible;
       // to stop log content bleeding through the sticky header
       padding-block-start: 0;
     }
@@ -173,21 +180,33 @@ limitations under the License.
     padding-inline: 0;
   }
 
-  .tkn--step-details {
-    overflow: initial;
-
-    > .#{$prefix}--tabs {
-      position: sticky;
-      inset-block-start: 4.4rem;
-      z-index: 5996;
-      background-color: $layer;
-    }
-  }
-
   header.tkn--step-details-header {
     padding: 1rem 0 0 0;
     position: sticky;
-    inset-block-start: 0;
-    z-index: 5997;
+    inset-block-start: var(--tkn-global-header-offset);
+    z-index: 4997;
   }
+
+  .tkn--step-details {
+    > .#{$prefix}--tabs {
+      position: sticky;
+      inset-block-start: calc(var(--tkn-global-header-offset) + 4.4rem);
+      z-index: 4996;
+      background-color: $layer;
+    }
+
+    &:not(.tkn--taskrun--maximized) {
+      overflow: initial;
+    }
+
+    .#{$prefix}--snippet--multi {
+      max-inline-size: none;
+    }
+  }
+}
+
+.#{$prefix}--tabs.#{$prefix}--tabs--vertical.tkn--task-list {
+  position: sticky;
+  inset-block-start: var(--tkn-global-header-offset);
+  max-block-size: calc(100vb - var(--tkn-global-header-offset));
 }

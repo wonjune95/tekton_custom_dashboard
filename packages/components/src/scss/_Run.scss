@@ -20,7 +20,7 @@ limitations under the License.
   // but for the new tab layout in a narrow window
   // we need to allow the tabs to appear horizontally
   // across the top of the container
-  &:not(:has(> .#{$prefix}--tabs)) {
+  &:not(:has(> .#{$prefix}--tabs, > .tkn--step-details:first-child)) {
     display: flex;
     flex-wrap: nowrap;
     min-block-size: calc(100vb - 16rem);
@@ -49,7 +49,6 @@ limitations under the License.
 
   > .#{$prefix}--css-grid {
     padding-inline: 0;
-    height: calc(100cqh - 350px);
   }
 }
 
@@ -60,11 +59,11 @@ limitations under the License.
 .tkn--task-logs {
   .#{$prefix}--accordion__heading {
     position: sticky;
-    inset-block-start: 6.5rem;
-    background-color: var(--cds-layer-01);
+    inset-block-start: calc(6.9rem + var(--tkn-global-header-offset));
+    background-color: $layer-01;
     // this needs to be lower than the run header to prevent it bleeding through
     // popovers or other menus such as the log settings
-    z-index: 5995;
+    z-index: 4995;
 
     &:focus, &:hover {
       // prevent Carbon from reverting to position: relative
@@ -105,4 +104,15 @@ limitations under the License.
       }
     }
   }
+}
+
+.tkn--step-details.tkn--taskrun--maximized {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  block-size: 100vb;
+  overflow: auto;
+
+  // need to include units here otherwise breaks calc()
+  --tkn-global-header-offset: 0rem;
 }

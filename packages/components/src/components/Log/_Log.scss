@@ -141,7 +141,7 @@ pre.tkn--log {
 
 .tkn--log-settings-menu {
   // needs to appear over sticky headers
-  z-index: 5998;
+  z-index: 4998;
 }
 
 .#{$prefix}--popover-content.tkn--log-settings-menu-content {
@@ -155,7 +155,7 @@ pre.tkn--log {
   hr {
     border: none;
     margin-block: 1rem;
-    background: $border-subtle;
+    background: $border-subtle-01;
     block-size: 1px;
   }
 }

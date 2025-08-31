@@ -39,10 +39,10 @@ function Header({
   const intl = useIntl();
   return (
     <Theme
-      aria-label="Tekton Dashboard"
+      aria-label="NHN Native Deck"
       as={CarbonHeader}
-      className="tkn--header"
-      theme="g100"
+      className="tkn--header nd-header"
+      theme="g10"
     >
       <SkipToContent href="#" onClick={skipToContentClick}>
         {intl.formatMessage({
@@ -68,8 +68,8 @@ function Header({
           onClick={onHeaderMenuButtonClick}
         />
       )}
-      <HeaderName prefix="Tekton" {...headerNameProps}>
-        Dashboard
+      <HeaderName prefix="NHN" {...headerNameProps}>
+        Native Deck
       </HeaderName>
       <HeaderGlobalBar>{children}</HeaderGlobalBar>
       <SideNav expanded={isSideNavExpanded} />

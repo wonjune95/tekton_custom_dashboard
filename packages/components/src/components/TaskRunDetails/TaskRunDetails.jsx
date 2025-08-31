@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import {
+  classNames,
   dashboardReasonSkipped,
   getParams,
   getTranslateWithId,
@@ -74,8 +75,10 @@ const defaults = {
 const TaskRunDetails = ({
   fullTaskRun,
   getLogsToolbar,
+  isMaximized,
   logs,
   onRetryChange,
+  onToggleMaximized,
   onViewChange = defaults.onViewChange,
   pod,
   selectedRetry,
@@ -351,7 +354,11 @@ const TaskRunDetails = ({
       });
 
   return (
-    <div className="tkn--step-details">
+    <div
+      className={classNames('tkn--step-details', {
+        'tkn--taskrun--maximized': isMaximized
+      })}
+    >
       <DetailsHeader
         displayName={displayName}
         hasWarning={taskRunHasWarning(taskRun)}
@@ -383,6 +390,8 @@ const TaskRunDetails = ({
         {getLogsToolbar
           ? getLogsToolbar({
               id: 'logs-toolbar',
+              isMaximized,
+              onToggleMaximized,
               taskRun
             })
           : null}

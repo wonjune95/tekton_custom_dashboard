@@ -15,7 +15,6 @@ limitations under the License.
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 import { defaultQueryFn } from './src/api/utils';
 import { setTheme } from './src/utils';
 import App from './src/containers/App';
