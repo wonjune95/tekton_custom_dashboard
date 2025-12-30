@@ -1,5 +1,5 @@
 ﻿# ---------- 1) UI 빌드 (Node 20) ----------
-FROM node:20-bullseye AS ui
+FROM node:25-bullseye AS ui
 WORKDIR /src
 
 # 의존성
