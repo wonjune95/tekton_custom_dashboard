@@ -13,7 +13,7 @@ Tekton Dashboard는 [Tekton Pipelines](https://github.com/tektoncd/pipeline)와 
 
 ---
 
-## 🚀 주요 변경 사항 (Custom Features)
+## 주요 변경 사항 (Custom Features)
 
 이 커스텀 버전에는 다음과 같은 기능이 수정 및 추가되었습니다.
 
@@ -30,7 +30,7 @@ Tekton Dashboard는 [Tekton Pipelines](https://github.com/tektoncd/pipeline)와 
 
 ---
 
-## 🌟 기본 기능 (Original Features)
+## 기본 기능 (Original Features)
 
 Tekton Dashboard는 기본적으로 다음과 같은 기능을 제공합니다.
 
@@ -43,7 +43,7 @@ Tekton Dashboard는 기본적으로 다음과 같은 기능을 제공합니다.
 
 <img width="1897" height="927" alt="image" src="https://github.com/user-attachments/assets/d26d1a19-1bbf-4aa3-a2e0-2f9887dca8fb" />
 
-## 📖 문서 및 가이드
+## 문서 및 가이드
 
 - **설치 방법:** [Installing Tekton Dashboard](./install.md)
 - **튜토리얼:** ["Getting started" tutorial](./tutorial.md)
@@ -51,7 +51,7 @@ Tekton Dashboard는 기본적으로 다음과 같은 기능을 제공합니다.
 
 공식 문서 및 버전별 링크는 [Tekton 웹사이트](https://tekton.dev/docs)에서 확인할 수 있습니다.
 
-## 🌐 브라우저 지원
+## 브라우저 지원
 
 Tekton Dashboard는 최신 모던 브라우저에서 테스트되었습니다.
 
