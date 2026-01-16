@@ -50,24 +50,3 @@ Tekton Dashboard는 기본적으로 다음과 같은 기능을 제공합니다.
 - **공식 릴리즈:** [releases](https://github.com/tektoncd/dashboard/blob/main/releases.md)
 
 공식 문서 및 버전별 링크는 [Tekton 웹사이트](https://tekton.dev/docs)에서 확인할 수 있습니다.
-
-## 브라우저 지원
-
-Tekton Dashboard는 최신 모던 브라우저에서 테스트되었습니다.
-
-- Google Chrome (Windows, macOS, Linux)
-- Mozilla Firefox (Windows, macOS, Linux)
-- Apple Safari (macOS)
-- Microsoft Edge (Windows)
-
----
-
-## 🤝 기여하기 (Contribution)
-
-이 프로젝트는 오픈 소스이며, 기능 개선을 위한 제안이나 버그 리포트를 환영합니다.
-
----
-
-<p align="small">
-Except as otherwise noted, the content of this page is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 License</a>. Code samples are licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>.
-</p>
